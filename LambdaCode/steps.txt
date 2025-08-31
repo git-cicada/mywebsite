@@ -1,0 +1,29 @@
+### STEPS TO PACKAGE OPENAI LIBRRAY AS LAMBDA LAYER #####
+
+Step-1: We will use docker to create the PACKAGE
+
+===== DOCKER STEPS ========
+1- Install docker on your local
+    - Open Terminal and run --> brew install --cask docker (cask - To install large binaries like GUI apps)
+    - Start the Docker -->  open -a Docker
+    - Verify Install
+        - docker --version
+        - Hellow WOrld: docker run hello-world
+
+2- # Run an Amazon Linux container with Python 3.12 (Run the command inside your project directory)
+docker run -it --rm -v "$PWD":/var/task --entrypoint /bin/bash public.ecr.aws/lambda/python:3.12
+
+3- Inside the DOcker Shell 
+    cd /var/task
+    rm -rf python openai_layer.zip
+    mkdir -p python
+    pip install --platform manylinux2014_x86_64 --only-binary=:all: --upgrade --target=python openai
+    zip -r openai_layer.zip python
+
+4- Go to Lambda layer in AWS Console and uplaod the zip file
+5- Use Run time as Python 3.12 and leave the architechture as it (It will take x86 by default)
+6- Attach the Layer to Lambda Function.
+
+
+Step-2: Add IAM Policy for secret access to Lambda Role
+Step-3: Update S3 Bucket policy for allowing the object read and enable CORS policy

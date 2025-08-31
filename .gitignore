@@ -1,1 +1,4 @@
 archives/
+venv
+python/
+openai_layer.zip

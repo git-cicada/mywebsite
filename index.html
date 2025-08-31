@@ -82,10 +82,6 @@
       color: #fff;
     }
 
-    .social {
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-    }
 
     .social a {
       margin: 0 0.8rem;
@@ -98,6 +94,15 @@
     .social a:hover {
       color: #000;
       text-decoration: underline;
+    }
+
+    /* Quote styling */
+    .quote {
+        margin-top: 100px; /* Pushes quote 2–3 lines below social links */
+        font-size: 1rem;
+        font-style: italic;
+        color: #555;
+        text-align: center;
     }
   </style>
 </head>
@@ -119,6 +124,27 @@
       <a href="https://www.linkedin.com/in/chinmay-nayak-16011991/" target="_blank"><strong>LinkedIn</strong></a>
       <a href="https://github.com/git-cicada" target="_blank">GitHub</a>
     </div>
+
+
+    <!-- Quote Section -->
+    <div id="daily-quote" class="quote"></div>
   </div>
+
+  <script>
+    async function loadQuote() {
+      try {
+        // Replace with your S3 file URL
+        const response = await fetch("https://mydaily-quotes.s3.amazonaws.com/quote-of-the-day.json");
+        const data = await response.json();
+
+        document.getElementById("daily-quote").textContent = `"${data.quote}"`;
+      } catch (error) {
+        document.getElementById("daily-quote").textContent = "Could not load today's quote.";
+        console.error("Error fetching quote:", error);
+      }
+    }
+
+    loadQuote();
+  </script>
 </body>
 </html>
